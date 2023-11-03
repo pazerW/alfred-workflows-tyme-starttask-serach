@@ -1,15 +1,14 @@
-
 # alfred-workflows-tyme-starttask-serach
 
-## Provides the function of quickly starting Tyme Task timing in Alfred
+## 提供 Alfred 中快捷开始 Tyme Task 计时的功能
 
-Keywords: ts
+keyword: ts 
 
 ![image.png](https://pazer-markdown.oss-cn-beijing.aliyuncs.com/img20231103103731.png)
 
 
-search:
+serach:
 
 ![image.png](https://pazer-markdown.oss-cn-beijing.aliyuncs.com/img20231103103825.png)
 
-You can search for the answer name and start timing after selection;
+可以搜索对应名称，选择后开始计时；
