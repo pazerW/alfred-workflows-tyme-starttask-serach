@@ -30,5 +30,11 @@ When not currently timing, restart the Tyme timer for the last recorded Task pro
 Keyword: tsre
 
 
+## Timer
 
 
+Alfred Timer: Enter the number of minutes to start the timer;
+
+Keyword: timer 25
+
+Start a 25-minute timer.
