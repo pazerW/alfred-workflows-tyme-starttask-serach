@@ -1,4 +1,5 @@
-
+-- Script Filter
+-- AppleScript
 -- 外部参数
 try
 	set argu to "{query}" as string
@@ -157,8 +158,8 @@ repeat with itemInArray in newArrayFromSearch
 		set itemId to id of itemInArray
 		set jsonString to "{\"title\": \"" & itemName & "\", \"subtitle\": \"\", \"arg\": \"" & itemId & "\", \"valid\": \"true\", \"icon\": {\"path\": \"\"}},"
 		set jsonResult to jsonResult & jsonString
-	on error errormsg
-		log errormsg
+	on error ErrorMsg
+		log ErrorMsg
 	end try
 end repeat
 
