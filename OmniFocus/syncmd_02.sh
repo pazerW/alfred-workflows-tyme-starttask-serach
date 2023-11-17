@@ -1,5 +1,5 @@
--- Run Script
--- Shell
+# Run Script
+# Shell
 
 #!/bin/bash
 #一旦某行出错则停止
