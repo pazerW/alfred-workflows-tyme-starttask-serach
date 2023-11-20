@@ -1,5 +1,5 @@
-# Script Filter
-# Shell\
+-- Script Filter
+-- Shell\
 
 #!/bin/bash
 
@@ -18,7 +18,7 @@ jsonString+="] }"
 printf "$jsonString"
 
 
-# Next step
-# Run shortcuts
-# URL
-# https://www.icloud.com/shortcuts/56dccad89e78461194e8e99aba3bf611
+-- Next step
+-- Run shortcuts
+-- URL
+-- https://www.icloud.com/shortcuts/56dccad89e78461194e8e99aba3bf611
