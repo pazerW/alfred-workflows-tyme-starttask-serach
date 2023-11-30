@@ -55,6 +55,10 @@ Keyword：omrt 2
 
 keyword: oms
 
+Update：
+
+更新根据OmniFocus当中项目所在文件夹添加入iCal当中的不同日历；需要手动添加iCloud当中的日历，以及建立文件夹与日历之间的添加关系；
+
 ### OmniFocus 设置Task截止时间和Now Tag
 
 选中的OmniFocus的Task 增加Now的标签，并将截止时间更改为当前时间

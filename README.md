@@ -55,6 +55,11 @@ Sync the selected tasks from OmniFocus to iCal, using the due dates as the date 
 
 keyword: oms
 
+Update：
+
+Update different calendars added to iCal based on the folder where the project is located in OmniFocus; You need to manually add calendars in iCloud and set up a relationship between folders and calendars.
+
+
 ### OmniFocus Set Task Due Time and Now Tag
 
 For selected tasks in OmniFocus, add the "Now" tag and update the due time to the current time.
