@@ -85,3 +85,5 @@ tell application "OmniFocus"
 	end tell
 	
 end tell
+
+display alert "Script Finished" message "All operations completed." buttons {"OK"} default button "OK"
