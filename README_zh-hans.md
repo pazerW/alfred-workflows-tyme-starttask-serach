@@ -65,4 +65,16 @@ Update：
 
 keyword: omt
 
-### OmniFocus 同步今日完成Task到Obsidian 
+### OmniFocus 同步完成Task到Obsidian 
+
+将完成项目同步到Obsidian当中；
+
+包含两种情况，一个是今日，一个是每周；
+
+会同步更新，丢弃的项目；
+
+keyword: omsob
+
+参数 1：同步本周报告
+
+没有参数：同步今日报告

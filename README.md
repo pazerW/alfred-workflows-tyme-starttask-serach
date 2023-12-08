@@ -65,3 +65,16 @@ Update different calendars added to iCal based on the folder where the project i
 For selected tasks in OmniFocus, add the "Now" tag and update the due time to the current time.
 
 keyword: omt
+
+### Sync Completed Tasks from OmniFocus to Obsidian
+
+Synchronize completed projects to Obsidian.
+
+This includes two scenarios, one for today and one for each week.
+
+Will synchronize updates and discard abandoned projects.
+
+Keyword: omsob
+
+Parameter 1: Sync Weekly Report
+No parameter: Sync Today's Report
