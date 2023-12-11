@@ -5,7 +5,8 @@ import shutil
 from datetime import datetime, timedelta
 import webbrowser
 from urllib.parse import quote
-import time
+import re
+import json
 
 
 def open_url(url):
@@ -51,25 +52,27 @@ else:
     print("文件已存在")
 
 
-print("修改文件开始")
 # 打开文件并读取内容
 with open(filename, 'r') as file:
     lines = file.readlines()
-    print("打开新文件")
-    
 
-# 找到 "### 本周总结" 的位置
-index = next((i for i, line in enumerate(lines) if "### 本周总结" in line), -1)
+# 将 lines 转换为字符串
+content = ''.join(lines)
 
-# 在 "### 本周总结" 后面插入 *other_args，并删除原有的内容
-if index != -1:
-    lines[index + 1:index + 1] = other_args
-    lines = lines[:index + 1 + len(other_args)]
+# 将 *other_args 转换为字符串
+other_args_str = ' '.join(other_args)
+
+print(other_args_str)
+
+# 找到 "## 本周总结" 或 "## Weekly Review" 以下的所有内容，并替换为 *other_args_str
+new_content = re.sub(r'(## 本周总结|## Weekly Review).*', '', content, flags=re.DOTALL)
+new_content += '\n\n' + other_args_str
 
 # 将修改后的内容写回文件
 with open(filename, 'w') as file:
-    file.writelines(lines)
+    file.write(new_content)
     
+
 # 原始 URL
 file_name_url = quote(file_name + '.md')
 url = 'obsidian://open?vault=Base&file=01_Base%2F04_%E6%97%A5%E8%AE%B0%2F01_%E5%91%A8%E8%AE%B0%2F' + file_name_url

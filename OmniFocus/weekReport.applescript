@@ -68,7 +68,7 @@ end getSundayOfWeek
 
 
 
-set reportText to week_num & ",\n\n***\n\n### Weekly Review"
+set reportText to week_num & "\n## Weekly Review"
 
 
 on getformatDate(theDate)
@@ -130,7 +130,7 @@ tell application "OmniFocus"
 			set drop_bool to false
 			
 			set currentProj to item a of theProjects
-			set textTemp to return & "***\n#### " & name of currentProj & return
+			set textTemp to return & "***\n### " & name of currentProj & return
 			-- Loop through each day of the week
 			repeat with i from 0 to 6
 				-- Set the start and end of the day
@@ -144,58 +144,34 @@ tell application "OmniFocus"
 				-- set dropTasks to 
 				set theTasks to (every flattened task of currentProj where (its completed = true and completion date is greater than dayStart and completion date is less than dayEnd) or (its dropped = true and dropped date is greater than dayStart and dropped date is less than dayEnd))
 				if theTasks is not equal to {} then
-					set textTemp to textTemp & return & "##### " & my getformatDate(dayStart) & return
+					set textTemp to textTemp & return & "#### " & my getformatDate(dayStart) & return
 					
 					repeat with b from 1 to length of theTasks
 						-- Get the current task to work with
 						set currentTask to item b of theTasks
 						-- Save the completed date to a variable
 						
-						-- Get the time of the completed date
 						set taskID to id of currentTask
 						set omnifocusURL to "omnifocus:///task/" & taskID
 						if completed of currentTask then
-							-- currentTask ?????
 							set completedDate to completion date of currentTask
 							set time_str to time string of completedDate
 							set textTemp to textTemp  & "- [x] [" & name of currentTask & "](" & omnifocusURL & ")  ?" & time_str & return
 							set task_bool to true
 						else if dropped of currentTask then
-							-- currentTask ?????
 							set completedDate to dropped date of currentTask
 							set time_str to time string of completedDate
 							set textTemp to textTemp  & "- [ ] [" & name of currentTask & "](" & omnifocusURL & ")  ?" & time_str & return
 							set task_bool to true
 						else
-							-- currentTask ???????????????
 							display dialog "The task is neither completed nor dropped."
 						end if
 
 					end repeat
 				end if
 				
-				-- if dropTasks is not equal to {} then
-				-- 	set drop_text to drop_text  & return & "##### ??" & return
-					
-				-- 	repeat with b from 1 to length of dropTasks
-				-- 		-- Get the current task to work with
-				-- 		set currentTask to item b of dropTasks
-				-- 		-- Save the completed date to a variable
-				-- 		set completedDate to dropped date of currentTask
-				-- 		-- Get the time of the completed date
-				-- 		set taskID to id of currentTask
-				-- 		set omnifocusURL to "omnifocus:///task/" & taskID
-				-- 		-- Add the task to the report text with the completed time
-				-- 		set time_str to time string of completedDate
-				-- 		set drop_text to drop_text & "- [ ] [" & name of currentTask & "](" & omnifocusURL & ") ?" & time_str & return
-				-- 		set drop_bool to true
-				-- 	end repeat
-				-- end if
 			end repeat
 			
-			-- if drop_bool then
-			-- 	set reportText to reportText & drop_text & return
-			-- end if
 			if task_bool then
 				set reportText to reportText & textTemp & return
 			end if
