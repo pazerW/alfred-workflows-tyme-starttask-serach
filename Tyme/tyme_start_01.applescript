@@ -1,6 +1,5 @@
--- Script Filter
--- AppleScript
--- 外部参数
+
+-- ????
 try
 	set argu to "{query}" as string
 on error ErrorMsg
@@ -8,19 +7,20 @@ on error ErrorMsg
 	return
 end try
 
--- 获取当前日期
+
+set historicalCount to (system attribute "HISTORICAL_COUNT")
+-- ??????
 set currentDate to current date
 set dayString to text -2 thru -1 of ("0" & (day of currentDate as text))
 set yearString to year of currentDate as text
 set formattedDate to yearString & dayString
 
--- 获取临时目录路径
+-- ????????
 set tempDirectory to path to temporary items
-
--- 构建文件路径，以当前日期命名文件
+-- ????????????????
 set filePath to (tempDirectory as text) & formattedDate & "_array_data.txt"
 
--- 获取 Tyme 中所有未完成的任务
+-- ?? Tyme ?????????
 on getTaskNamesArr()
 	set taskDetailsArr to {}
 	tell application "Tyme"
@@ -44,7 +44,7 @@ on getTaskNamesArr()
 end getTaskNamesArr
 
 
--- 将任务数组写入文件
+-- ?????????
 on storeTaskDetailsToFile(taskDetails, filePath)
 	set fileRef to open for access file filePath with write permission
 	set textToWrite to ""
@@ -56,7 +56,7 @@ on storeTaskDetailsToFile(taskDetails, filePath)
 	close access fileRef
 end storeTaskDetailsToFile
 
--- 在数组中搜索特定内容并返回包含搜索内容的数组
+-- ??????????????????????
 on searchArrayForString(searchString, arrayToSearch)
 	set foundArray to {}
 	
@@ -68,7 +68,7 @@ on searchArrayForString(searchString, arrayToSearch)
 	return foundArray
 end searchArrayForString
 
--- 在数组中搜索特定名称并返回包含搜索内容的数组
+-- ??????????????????????
 on searchArrayForName(searchString, arrayToSearch)
 	set foundArray to {}
 	repeat with itemInArray in arrayToSearch
@@ -80,7 +80,59 @@ on searchArrayForName(searchString, arrayToSearch)
 	return foundArray
 end searchArrayForName
 
--- 从文件中读取数组
+-- ??????
+on getHistoricalTaskNamesArr()
+    set documentsFolder to path to documents folder
+    set documentsFolderPath to POSIX path of documentsFolder
+    -- ??????????? "YYYYMMDD" ??
+    set currentDate to current date
+    set year_ to year of currentDate as text
+    set month_ to text -2 thru -1 of ("0" & (month of currentDate as integer))
+    set day_ to text -2 thru -1 of ("0" & (day of currentDate as integer))
+    set formattedDate to year_ & month_ & day_
+    -- ????
+	log 0
+
+    set filePath to documentsFolderPath & "alfred/" & formattedDate & "_reach.txt"
+	-- ?????????
+	set fileDescriptor to open for access filePath
+	-- ???????
+	try
+		set fileContent to read fileDescriptor
+	on error
+		close access fileDescriptor
+		return {}
+	end try
+
+	-- ????
+	if fileDescriptor is not equal to "" then
+			set taskDetailsArr to {}
+			set taskDetailsLines to paragraphs of fileContent
+			set counter to 0
+		    set actualCount to count of taskDetailsLines
+			set historicalCount to my historicalCount 
+			if actualCount < historicalCount then
+				set historicalCount to actualCount
+			end if
+			repeat with aLine in taskDetailsLines
+				if counter is equal to my historicalCount then
+					exit repeat
+				end if
+				set {taskName, taskID} to my extractDetails(aLine)
+				if taskName is not missing value and taskID is not missing value then
+					set end of taskDetailsArr to {name:taskName, id:taskID}
+				end if
+				-- ???????
+				set counter to counter + 1				
+			end repeat
+			return taskDetailsArr
+    else
+        error "The file is empty"
+    end if
+    close access fileDescriptor
+end getHistoricalTaskNamesArr
+
+-- ????????
 on retrieveTaskDetailsFromFile(filePath)
 	try
 		set fileRef to (open for access file filePath)
@@ -103,11 +155,11 @@ on retrieveTaskDetailsFromFile(filePath)
 			error "The file is empty"
 		end if
 	on error ErrorMsg
-		error "Error accessing the file or file not found：" & ErrorMsg
+		error "Error accessing the file or file not found?" & ErrorMsg
 	end try
 end retrieveTaskDetailsFromFile
 
--- 从文件中提取任务名称和 ID
+-- ??????????? ID
 on extractDetails(aLine)
 	try
 		set AppleScript's text item delimiters to {","}
@@ -123,7 +175,7 @@ on extractDetails(aLine)
 	end try
 end extractDetails
 
--- 从文件中读取数组，如果文件不存在，则写入示例数组
+-- ????????????????????????
 set loadedArray to {}
 try
 	set loadedArray to retrieveTaskDetailsFromFile(filePath)
@@ -133,24 +185,34 @@ on error ErrorMsg
 end try
 
 
--- 搜索包含特定内容的数组
+-- ???????????
 set searchString to argu as string
 -- set searchString to argu as string
 
 set newArrayFromSearch to searchArrayForName(searchString, loadedArray)
 
-
--- 未找到对应数据
-set systemLanguage to do shell script "defaults read NSGlobalDomain AppleLanguages | tr -d '[:space:]' | cut -d'\"' -f2"
--- 设置不同语言下的输出文本
-if systemLanguage contains "zh-Hans" then
-	set end of newArrayFromSearch to {name:"未找到对应任务", id:""}
-else
-	set end of newArrayFromSearch to {name:"Task not found", id:""}
+-- ?? newArrayFromSearch ????? loadedArray ??????????? newArrayFromSearch
+if count of newArrayFromSearch is equal to 0 then
+	 -- ????
+    set historicalTaskNamesArr to getHistoricalTaskNamesArr()
+    -- ??????
+    set newArrayFromSearch to historicalTaskNamesArr
 end if
 
 
--- 将搜索结果数组转换为指定的 JSON 格式
+-- ?? newArrayFromSearch ???????????????
+if count of newArrayFromSearch is equal to 0 then
+	-- ??????
+	set systemLanguage to do shell script "defaults read NSGlobalDomain AppleLanguages | tr -d '[:space:]' | cut -d'\"' -f2"
+	-- ????????????
+	if systemLanguage contains "zh-Hans" then
+		set end of newArrayFromSearch to {name:"???????", id:""}
+	else
+		set end of newArrayFromSearch to {name:"Task not found", id:""}
+	end if
+end if
+
+-- ????????????? JSON ??
 set jsonResult to ""
 repeat with itemInArray in newArrayFromSearch
 	try
@@ -163,13 +225,13 @@ repeat with itemInArray in newArrayFromSearch
 	end try
 end repeat
 
--- 移除最后一个逗号
+-- ????????
 if length of jsonResult > 0 then
 	set jsonResult to text 1 thru -2 of jsonResult
 end if
 
--- 添加 { "items": 到 JSON 输出的第一行
+-- ?? { "items": ? JSON ??????
 set finalJson to "{ \"items\": [" & jsonResult & "] }"
 
--- 显示结果
+-- ????
 return finalJson
