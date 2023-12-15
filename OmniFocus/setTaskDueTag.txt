@@ -9,7 +9,7 @@ tell application "OmniFocus"
 	repeat with aTag in topLevelTags
 		if name of aTag is "Goal" then
 			repeat with childTag in tags of aTag
-				if name of childTag is "☀️Now" then
+				if name of childTag is "Now" then
 					set subTag to childTag
 					exit repeat
 				end if
@@ -22,7 +22,7 @@ tell application "OmniFocus"
 		repeat with aTask in selectedTasks
 			set taskTags to name of tags of aTask
 
-			if "☀️Now" is in taskTags then
+			if "Now" is in taskTags then
 
 				remove subTag from tags of aTask
 			else

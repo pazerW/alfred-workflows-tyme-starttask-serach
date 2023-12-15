@@ -156,12 +156,12 @@ tell application "OmniFocus"
 						if completed of currentTask then
 							set completedDate to completion date of currentTask
 							set time_str to time string of completedDate
-							set textTemp to textTemp  & "- [x] [" & name of currentTask & "](" & omnifocusURL & ")  ?" & time_str & return
+							set textTemp to textTemp  & "- [x] [" & name of currentTask & "](" & omnifocusURL & ")  ✅" & time_str & return
 							set task_bool to true
 						else if dropped of currentTask then
 							set completedDate to dropped date of currentTask
 							set time_str to time string of completedDate
-							set textTemp to textTemp  & "- [ ] [" & name of currentTask & "](" & omnifocusURL & ")  ?" & time_str & return
+							set textTemp to textTemp  & "- [ ] [" & name of currentTask & "](" & omnifocusURL & ")  ⛔" & time_str & return
 							set task_bool to true
 						else
 							display dialog "The task is neither completed nor dropped."
